@@ -25,6 +25,7 @@
                             <th>Genere</th>
                             <th>Regista</th>
                             <th>Attori</th>
+                            <th>#</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +36,7 @@
                             <td>{{$film->genere}}</td>
                             <td>{{$film->regista}}</td>
                             <td>{{$film->attori}}</td>
+                            <td><button type="submit" class="btn btn-danger">Rimuovi</button></td>
                         </tr>    
                         @endforeach
                         
