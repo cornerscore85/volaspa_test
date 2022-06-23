@@ -25,3 +25,4 @@ Route::get('cerca_id', [AuthController::class, 'cerca_id'])->name('cerca_id');
 Route::post('submit-cerca_titolo', [AuthController::class, 'postCercaTitolo'])->name('cerca_titolo.post'); 
 Route::post('submit-cerca_id', [AuthController::class, 'postCercaId'])->name('cerca_id.post');
 Route::post('submit-aggiungi_film', [AuthController::class, 'postAggiungiFilm'])->name('aggiungi_film.post'); 
+Route::post('submit-elimina_film', [AuthController::class, 'postEliminaFilm'])->name('elimina_film.post');

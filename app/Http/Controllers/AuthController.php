@@ -192,6 +192,22 @@ class AuthController extends Controller
         return redirect("login")->withSuccess('Attenzione! Accesso non effettuato');
     }
 
+    /**
+     * 
+     *
+     * @return response()
+     */
+    public function postEliminaFilm(Request $request)
+    {
+        $id=$request->input('film_id');
+        $film = Film::findOrFail($id);
+        $film->delete();
+
+        return redirect("dashboard")->withSuccess('Film eliminato correttamente.');
+
+
+    }
+
 
     
 

@@ -36,7 +36,14 @@
                             <td>{{$film->genere}}</td>
                             <td>{{$film->regista}}</td>
                             <td>{{$film->attori}}</td>
-                            <td><button type="submit" class="btn btn-danger">Rimuovi</button></td>
+                            <td>
+                                <form action="{{ route('elimina_film.post', $film->id)}}" method="POST" style="display: inline-block">
+                                @csrf     
+                                      <input type="text" id="film_id" class="form-control" name="film_id" hidden value="{{ $film->id}}"/>
+                                      <button class="btn btn-danger btn-sm" type="submit">Elimina Film</button>
+                                </form>    
+
+                            </td>
                         </tr>    
                         @endforeach
                         
