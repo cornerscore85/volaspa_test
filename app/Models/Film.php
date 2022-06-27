@@ -9,8 +9,5 @@ class Film extends Model
 {
     use HasFactory;
 
-    public function actors()
-    {
-        return $this->hasMany(Actor::class);
-    }
+    
 }

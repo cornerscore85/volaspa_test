@@ -24,7 +24,6 @@
                             <th>Anno</th>
                             <th>Genere</th>
                             <th>Regista</th>
-                            <th>Attori</th>
                             <th>#</th>
                         </tr>
                     </thead>
@@ -35,7 +34,6 @@
                             <td>{{$film->anno}}</td>
                             <td>{{$film->genere}}</td>
                             <td>{{$film->regista}}</td>
-                            <td>{{$film->attori}}</td>
                             <td>
                                 <form action="{{ route('elimina_film.post', $film->id)}}" method="POST" style="display: inline-block">
                                 @csrf     
