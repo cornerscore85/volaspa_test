@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
+use App\Models\Director;
+use App\Models\Actor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -71,15 +73,23 @@ class AuthController extends Controller
         $response = Http::acceptJson()->get($url);
         
         $films = json_decode($response, true);
+        
+        $api_response=$films['Response'];
 
-        $titolo=$films['Title'];
-        $id_utente=Auth::id();
-        // Verifica se film esiste già nella collezione privata
-        $result = DB::table('films')->get()->where('id_utente',$id_utente)->where('titolo',$titolo);
-        $esiste=0;
-        if ($result->count() > 0)$esiste=1;
-        //return $myArray;
-        return view('cerca_film_risultati', ['films' => $films,'esiste' => $esiste]);
+        if($api_response=="False"){
+            return redirect("cerca_titolo")->withWarning('Attenzione! Il film ricercato non esiste.');
+        }
+        else{
+
+            $titolo=$films['Title'];
+            $id_utente=Auth::id();
+            // Verifica se film esiste già nella collezione privata
+            $result = DB::table('films')->get()->where('id_utente',$id_utente)->where('titolo',$titolo);
+            $esiste=0;
+            if ($result->count() > 0)$esiste=1;
+            //return $myArray;
+            return view('cerca_film_risultati', ['films' => $films,'esiste' => $esiste]);
+        }
     }
 
     /**
@@ -95,14 +105,21 @@ class AuthController extends Controller
         
         $films = json_decode($response, true);
         
-        $titolo=$films['Title'];
-        $id_utente=Auth::id();
-        // Verifica se film esiste già nella collezione privata
-        $result = DB::table('films')->get()->where('id_utente',$id_utente)->where('titolo',$titolo);
-        $esiste=0;
-        if ($result->count() > 0)$esiste=1;
-        //return $myArray;
-        return view('cerca_film_risultati', ['films' => $films,'esiste' => $esiste]);
+        $api_response=$films['Response'];
+
+        if($api_response=="False"){
+            return redirect("cerca_id")->withWarning('Attenzione! Il film ricercato non esiste.');
+        }
+        else{
+            $titolo=$films['Title'];
+            $id_utente=Auth::id();
+            // Verifica se film esiste già nella collezione privata
+            $result = DB::table('films')->get()->where('id_utente',$id_utente)->where('titolo',$titolo);
+            $esiste=0;
+            if ($result->count() > 0)$esiste=1;
+            //return $myArray;
+            return view('cerca_film_risultati', ['films' => $films,'esiste' => $esiste]);
+        }
     }
 
 
@@ -135,6 +152,45 @@ class AuthController extends Controller
         $film->attori= $attori;
         $film->trama= $trama;
         $film->save();
+
+        $director = new Director;
+        $director->nome= $regista;
+
+        //RICERCA REGISTA
+        $id_regista = DB::table('directors')->where('nome',$regista)->value('id');
+        if ($id_regista > 0){
+            
+        }
+        else{
+            $director->save();
+            $id_regista=$director->id;
+
+        }
+
+        // CREO ARRAY ATTORI
+
+        $attori_array=explode(",",$attori);
+        $attori_array_ids=array();
+
+        for($i=0;$i<sizeof($attori_array);$i++){
+            $nome_attore=$attori_array[$i];
+            $id_attore = DB::table('actors')->where('nome',$nome_attore)->value('id');
+            if ($id_attore > 0){
+                array_push($attori_array_ids,$id_attore);
+            }
+            else{
+                $actor = new Actor;
+                $actor->nome= $nome_attore;
+                $actor->save();
+                $id_attore=$actor->id;
+                array_push($attori_array_ids,$id_attore);
+    
+            }
+
+        }
+
+
+
 
      
         return redirect("dashboard")->withSuccess('Inserimento avvenuto correttamente.');

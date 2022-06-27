@@ -6,6 +6,11 @@
         <div class="col-md-8 mt-4">
                     
                     <h3>Cerca Film per Id</h3>
+                    @if (Session::get('warning'))
+                        <div class="alert alert-warning" role="alert">
+                            {{ Session::get('warning') }}
+                        </div>
+                    @endif
                     <form action="{{ route('cerca_id.post') }}" method="POST">
                           @csrf
                           <div class="form-group row">
